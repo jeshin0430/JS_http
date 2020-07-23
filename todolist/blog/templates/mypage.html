@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Mypage{% endblock title %}
+
+{% block css %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'mypage.css' %}">
+{% endblock css %}
+
+{% block content %}
+<div>
+    <h2>좋아요 게시물 목록</h2>
+    {% for post in posts %}
+      {% for like in likes %}
+        {% if post.pk == like.post.pk %}
+          <h3><a href="{% url 'detail' post.pk %}">{{ post.title }}</a></h3>
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
+  </div>
+  <div>
+    <h2>찜 게시물 목록</h2>
+    {% for post in posts %}
+      {% for select in selects %}
+        {% if post.pk == select.post.pk %}
+          <h3><a href= "{% url 'detail' post.pk %}">{{ post.title }}</a></h3>
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
+  </div>
+
+{% endblock content %}

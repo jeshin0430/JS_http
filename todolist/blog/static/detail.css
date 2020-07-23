@@ -1,0 +1,39 @@
+body {
+    font-family: 'Nanum Pen Script', cursive; 
+    font-size: 30px;
+    width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.likeone {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-item: center;
+
+}
+.box {
+    width: 20%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.list {
+    width: 30%;
+    border-bottom: 5px solid palevioletred;
+    text-align: center;
+}
+
+.comment{
+    font-size: 20px;
+    width: 40%;
+}
+
+.comment_d{
+    font-size: 15px;
+    float:right;
+}

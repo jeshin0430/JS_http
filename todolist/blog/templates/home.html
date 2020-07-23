@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock title %}
+
+{% block css %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'home.css' %}">
+{% endblock css %}
+
+{% block content %}
+<p class="list"> 할 일 목록 </p>
+    {% for post in posts %}
+    <div class="box">
+        <div class="title">
+            <div>
+                <a href="{% url 'detail' post.pk %}">{{post.title}}</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    <br>
+    <div class="add">
+        <a href="{% url 'new' %}">추가</a>
+    </div>
+{% endblock content %}

@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% block title %}Detail{% endblock title %}
+
+{% block css %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'detail.css' %}">
+{% endblock css %}
+
+{% block content %}
+<p class="list"> 할 일 : {{post.title}} </p>
+    <p> 세부사항 : {{post.content}} </p>
+    <p> 데드라인 : {{post.deadline}} </p>
+    <p> 이미지 : <img src="{{post.img}}" width="50px" height="50px" ></p>
+    <br>
+    <div class="box">
+        <div class="small_box">
+            <a href= "{% url 'home' %}">홈</a>
+        </div>
+
+        {% if user.is_authenticated and post.author.pk == user.pk %}
+        <div class="small_box">
+            <a href= "{% url 'edit' post.pk %}">수정</a>
+        </div>
+        <div class="small_box">
+            <a href= "{% url 'delete' post.pk %}">삭제</a>
+        </div>
+        {% endif %}
+    </div>
+    <br>
+    
+    
+    {% if user.is_authenticated %}
+    
+    <button id="like-button" onclick="like()">좋아요~♡</button>
+    {% endif %}
+    <div id="like-count">좋아요~♡{{ post.likes.count }}개</div>
+    {% if user.is_authenticated %}
+    <button id="select-button" onclick="select()">찜!</button>
+    {% endif %}
+    <div id="select-count">찜!{{ post.select.count }}개</div>
+
+    <br>
+    <div class="comment">
+        {% for comment in post.comments.all %}
+        <li> {{ comment.content }} </li>
+        {% if user.is_authenticated and comment.author.pk == user.pk %}
+        <div class="comment_d">
+            <a href="{% url 'delete_comment' post.pk comment.pk %}">댓글 삭제</a>
+        </div>
+        {% endif %}
+        <br>
+        {% endfor %}
+    </div>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        const likeButton = document.getElementById("like-button")
+        const likeCount = document.getElementById("like-count")
+  
+        const like = () => {
+            axios.post("/like", { post_pk: "{{post.pk}}" })
+            .then(
+            (response) => {
+                console.log(response.data.likeCheck)
+                if (response.data.likeCheck) {
+                    likeButton.style.color = "red"
+                } else {
+                    likeButton.style.color = "black"
+                }
+                likeCount.innerHTML =
+                    "좋아요" + response.data.like_count + "개"
+            })
+            .catch((error) => console.error(error));
+        }
+        const selectButton = document.getElementById("select-button")
+        const selectCount = document.getElementById("select-count")
+  
+        const select = () => {
+            axios.post("/select", { post_pk: "{{post.pk}}" })
+            .then(
+            (response) => {
+                console.log(response.data.selectCheck)
+                if (response.data.selectCheck) {
+                    selectButton.style.color = "blue"
+                } else {
+                    selectButton.style.color = "black"
+                }
+                selectCount.innerHTML =
+                    "찜" + response.data.select_count + "개"
+            })
+            .catch((error) => console.error(error));
+        }
+    </script>
+{% endblock content %}
